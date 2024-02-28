@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
-let record = {};
+import { EmailTemplate } from "@/components/email-template";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+let record = {
+  name: "test",
+  email: "test@test.t",
+};
 
 export async function GET(req: Request, res: Response) {
   return NextResponse.json({
@@ -18,9 +26,22 @@ export async function POST(req: Request, res: Response) {
   };
   record = user_info;
 
+  const result = await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: ["aaryan@buildfastwithai.com"],
+    subject: "Course Enrollment",
+    react: EmailTemplate({
+      name: data.record.name,
+      email: data.record.email,
+      phone: data.record.phone,
+    }),
+    text: "Course Enrollment Email", // Add the 'text' property with a value
+  });
+
   return NextResponse.json(
     {
       message: "Course enrollment email sent successfully",
+      data: result,
     },
     { status: 200 }
   );
