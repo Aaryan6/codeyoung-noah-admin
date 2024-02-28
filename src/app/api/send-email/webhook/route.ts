@@ -28,7 +28,7 @@ export async function POST(req: Request, res: Response) {
 
   await resend.emails.send({
     from: "aaryan@buildfastwithai.com",
-    to: ["satvik@buildfastwithai.com"],
+    to: ["aaryanpatel683@gmail.com"],
     subject: "New Course Enrollment",
     react: EmailTemplate({
       name: data.record.name,
