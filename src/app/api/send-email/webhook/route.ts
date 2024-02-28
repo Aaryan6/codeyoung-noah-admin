@@ -18,7 +18,7 @@ export async function GET(req: Request, res: Response) {
 }
 
 export async function POST(req: Request, res: Response) {
-  const data = await req.json();
+  const { data } = await req.json();
   const user_info = {
     name: data.record.name,
     email: data.record.email,
@@ -26,22 +26,21 @@ export async function POST(req: Request, res: Response) {
   };
   record = user_info;
 
-  const result = await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
-    to: ["aaryan@buildfastwithai.com"],
-    subject: "Course Enrollment",
+  await resend.emails.send({
+    from: "aaryan@buildfastwithai.com",
+    to: ["satvik@buildfastwithai.com"],
+    subject: "New Course Enrollment",
     react: EmailTemplate({
       name: data.record.name,
       email: data.record.email,
       phone: data.record.phone,
     }),
-    text: "Course Enrollment Email", // Add the 'text' property with a value
+    text: "New Course Enrollment Email", // Add the 'text' property with a value
   });
 
   return NextResponse.json(
     {
       message: "Course enrollment email sent successfully",
-      data: result,
     },
     { status: 200 }
   );
