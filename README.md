@@ -1,3 +1,9 @@
 ### Quiz App Admin
 
-#1
+# Total Quizes
+
+# Total Users
+
+# Total Quizes of a user
+
+# Quizes by grade, topic
