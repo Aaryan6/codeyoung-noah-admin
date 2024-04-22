@@ -1,22 +1,24 @@
+"use client";
 import StatsCard from "@/components/stats-card";
-import {
-  getTotalQuestions,
-  getTotalQuizzes,
-  getTotalTopics,
-  getTotalUsers,
-} from "@/actions/quiz.actions";
+import { useEffect, useState } from "react";
+import useUserStore from "@/lib/zustand/user.select";
+import { getTotalQuizzes } from "@/actions/user.actions";
 
-export default async function Statistics() {
-  const totalQuestions = await getTotalQuestions();
-  const totalQuizzes = await getTotalQuizzes();
-  const totalTopics = await getTotalTopics();
-  const totalUsers = await getTotalUsers();
+export default function Statistics() {
+  const [totalQuizzes, setTotalQuizzes] = useState(0);
+  const useUser = useUserStore();
+
+  useEffect(() => {
+    (async () => {
+      const quiz_res: any = await getTotalQuizzes(useUser.userid!);
+      setTotalQuizzes(quiz_res);
+      console.log(quiz_res);
+      console.log(useUser.userid);
+    })();
+  }, [useUser.userid]);
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
       <StatsCard title="Total Quizzes" figure={totalQuizzes ?? 0} />
-      <StatsCard title="Total Questions" figure={totalQuestions ?? 0} />
-      <StatsCard title="Users" figure={totalUsers} />
-      <StatsCard title="Topics" figure={totalTopics} />
     </div>
   );
 }

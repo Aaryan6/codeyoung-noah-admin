@@ -4,21 +4,21 @@ import { dateFormat } from "@/lib/utils";
 
 export async function getTotalQuizzes() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("*");
+  const { data, error } = await supabase.from("quiz").select("id");
   if (error) console.log(error);
   return data?.length;
 }
 
 export async function getTotalQuestions() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("db_math").select("*");
+  const { data, error } = await supabase.from("db_math").select("id");
   if (error) console.log(error);
   return data?.length;
 }
 
 export async function getTotalTopics() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("db_math").select("*");
+  const { data, error } = await supabase.from("db_math").select("metadata");
   if (error) console.log(error);
   const topics = data?.map((d) => d.metadata.topic);
   const uniqueTopics = Array.from(new Set(topics));
@@ -27,7 +27,7 @@ export async function getTotalTopics() {
 
 export async function getTotalUsers() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("*");
+  const { data, error } = await supabase.from("quiz").select("userid");
   if (error) console.log(error);
   const users = data?.map((d) => d.userid!);
   const realUsers = users?.filter((u) => u !== null);
@@ -37,7 +37,7 @@ export async function getTotalUsers() {
 
 export async function getQuizFigure() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("*");
+  const { data, error } = await supabase.from("quiz").select("created_at");
   if (error) console.log(error);
 
   const quizzesPerDay = data?.map((d: any) => dateFormat(d.created_at));
