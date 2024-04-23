@@ -28,10 +28,10 @@ export async function getQuestionsCountByBloomsLevel() {
     return acc;
   }, {});
 
-  console.log("Questions count by Bloom's level:");
+  // console.log("Questions count by Bloom's level:");
   const bloomsLevelsQuestions = [];
   for (const [bloomsLevel, count] of Object.entries(bloomsLevelsCount)) {
-    console.log(`${bloomsLevel}: ${count}`);
+    // console.log(`${bloomsLevel}: ${count}`);
     bloomsLevelsQuestions.push({
       bloomsLevel,
       count,
