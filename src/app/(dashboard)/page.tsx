@@ -5,16 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarDateRangePicker } from "./_components/date-range-picker";
 import Statistics from "./_components/statistics";
-import { getQuizFigure } from "@/actions/quiz.actions";
 import { SelectUser } from "./_components/select-user";
 import UserStatistics from "./_components/user-statistics";
+import QuizStatistics from "./_components/quiz-statistics";
+import { getTotalGkQuizzes, getTotalQuizzes } from "@/actions/insight.action";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Example dashboard app built using the components.",
+  description: "Quiz App Dashboard",
 };
 
 export default async function DashboardPage() {
+  const gkQuiz = await getTotalGkQuizzes();
+  const totalQuiz = await getTotalQuizzes();
   return (
     <div className='mx-auto w-full max-w-7xl flex-col flex'>
       <div className='flex-1 space-y-4 p-8 pt-6'>
@@ -42,7 +45,7 @@ export default async function DashboardPage() {
               </div>
               <div className='flex-1 space-y-4'>
                 <div className='pt-4'>
-                  <UserStatistics />
+                  <QuizStatistics gkQuiz={gkQuiz} totalQuiz={totalQuiz} />
                 </div>
               </div>
             </div>

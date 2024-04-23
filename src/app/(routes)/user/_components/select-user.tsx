@@ -37,23 +37,23 @@ export function SelectUser() {
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
-          variant="outline"
-          role="combobox"
+          variant='outline'
+          role='combobox'
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className='w-[200px] justify-between'
         >
           {useUser.userid
             ? users.find((user) => user.toLowerCase() === useUser.userid)
             : "Select user"}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className='w-[200px] p-0'>
         <Command>
-          <CommandInput placeholder="Search framework..." />
+          <CommandInput placeholder='Search User Id...' />
           <CommandEmpty>No framework found.</CommandEmpty>
           <CommandGroup>
-            <ScrollArea className="h-96 w-full rounded-md border">
+            <ScrollArea className='h-96 w-full rounded-md border'>
               {users.map((user: string) => (
                 <CommandItem
                   key={user}
@@ -64,7 +64,7 @@ export function SelectUser() {
                     );
                     setOpen(false);
                   }}
-                  className="cursor-pointer"
+                  className='cursor-pointer'
                 >
                   <Check
                     className={cn(
