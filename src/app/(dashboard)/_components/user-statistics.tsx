@@ -8,7 +8,7 @@ import {
   getTotalQuizzes,
 } from "@/actions/user.actions";
 
-export default function Statistics() {
+export default function UserStatistics() {
   const [totalQuizzes, setTotalQuizzes] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
   const [totalTopics, setTotalTopics] = useState<any[]>([]); // Update the type of totalTopics to be an array of any
