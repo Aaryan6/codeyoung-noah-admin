@@ -24,8 +24,8 @@ const QuizStatistics: React.FC<QuizStatisticsProps> = ({
   }, []);
 
   return (
-    <div className="grid gap-6 grid-cols-1">
-      <Card>
+    <div className='grid gap-6 grid-cols-1'>
+      {/* <Card>
         <CardHeader>
           <CardTitle>Questions Count by Bloom&apos;s Level</CardTitle>
         </CardHeader>
@@ -38,15 +38,15 @@ const QuizStatistics: React.FC<QuizStatisticsProps> = ({
             <Bar dataKey="count" fill="#000" label="Number of Questions" />
           </BarChart>
         </CardContent>
-      </Card>
+      </Card> */}
 
-      <div className="grid gap-6 grid-cols-1 md:grid-cols-2">
+      <div className='grid gap-6 grid-cols-1 md:grid-cols-2'>
         <Card>
           <CardHeader>
             <CardTitle>Total GK Quiz</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{gkQuiz}</div>
+            <div className='text-2xl font-bold'>{gkQuiz}</div>
           </CardContent>
         </Card>
         <Card>
@@ -54,7 +54,7 @@ const QuizStatistics: React.FC<QuizStatisticsProps> = ({
             <CardTitle>Total Quiz</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalQuiz}</div>
+            <div className='text-2xl font-bold'>{totalQuiz}</div>
           </CardContent>
         </Card>
       </div>
