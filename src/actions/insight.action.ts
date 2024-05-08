@@ -40,3 +40,60 @@ export async function getQuestionsCountByBloomsLevel() {
 
   return bloomsLevelsQuestions;
 }
+
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export const groupDataByDifficultyLevel = async () => {
+  const supabase = createClient();
+
+  const tableNames = [
+    "db_grade1_math",
+    "db_grade2_math",
+    "db_grade3_math",
+    "db_grade4_math",
+    "db_grade5_math",
+    "db_grade6_math",
+    "db_grade7_math",
+    "db_grade8_math",
+  ];
+
+  try {
+    const groupedData: {
+      [difficultyLevel: string]: { count: number };
+    } = {};
+
+    for (const tableName of tableNames) {
+      const { data, error } = await supabase.from(tableName).select("*");
+
+      if (error) {
+        console.error(`Error fetching data from ${tableName}: `, error);
+      } else {
+        data.forEach((item) => {
+          const difficultyLevel = item.difficulty_level.toLowerCase();
+          if (groupedData[difficultyLevel]) {
+            groupedData[difficultyLevel].count++;
+          } else {
+            groupedData[difficultyLevel] = {
+              count: 1,
+            };
+          }
+        });
+      }
+    }
+
+    console.log(groupedData);
+    const chartData = Object.entries(groupedData).map(
+      ([difficultyLevel, { count }]) => ({
+        difficultyLevel: capitalize(difficultyLevel),
+        count,
+      })
+    );
+
+    return { chartData, groupedData };
+  } catch (error) {
+    console.error("Error grouping data: ", error);
+    throw error;
+  }
+};

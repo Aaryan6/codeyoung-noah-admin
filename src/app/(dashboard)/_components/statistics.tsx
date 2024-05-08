@@ -5,7 +5,6 @@ import {
   getTotalTopics,
   getTotalUsers,
 } from "@/actions/quiz.actions";
-import { getQuestionsCountByBloomsLevel } from "@/actions/insight.action";
 
 export default async function Statistics() {
   const totalQuestions = await getTotalQuestions();

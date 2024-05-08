@@ -8,7 +8,12 @@ import Statistics from "./_components/statistics";
 import { SelectUser } from "./_components/select-user";
 import UserStatistics from "./_components/user-statistics";
 import QuizStatistics from "./_components/quiz-statistics";
-import { getTotalGkQuizzes, getTotalQuizzes } from "@/actions/insight.action";
+import {
+  getTotalGkQuizzes,
+  getTotalQuizzes,
+  groupDataByDifficultyLevel,
+} from "@/actions/insight.action";
+import QuestionsStatistics from "./_components/questions-statistics";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -18,6 +23,9 @@ export const metadata: Metadata = {
 export default async function DashboardPage() {
   const gkQuiz = await getTotalGkQuizzes();
   const totalQuiz = await getTotalQuizzes();
+
+  const { chartData, groupedData } = await groupDataByDifficultyLevel();
+
   return (
     <div className='mx-auto w-full max-w-7xl flex-col flex'>
       <div className='flex-1 space-y-4 p-8 pt-6'>
@@ -31,12 +39,15 @@ export default async function DashboardPage() {
         <Tabs defaultValue='overview' className='space-y-4'>
           <TabsList>
             <TabsTrigger value='overview'>Overview</TabsTrigger>
-            {/* <TabsTrigger value='analytics' disabled>
-                Analytics
-              </TabsTrigger> */}
           </TabsList>
           <TabsContent value='overview' className='space-y-4'>
             <Statistics />
+            {chartData && groupedData && (
+              <QuestionsStatistics
+                chartData={chartData}
+                groupedData={groupedData || {}}
+              />
+            )}
             <div className='flex-col flex pt-6'>
               <div className='flex items-center justify-between space-y-2'>
                 <h2 className='text-3xl font-semibold tracking-tight'>
