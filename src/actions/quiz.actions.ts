@@ -183,9 +183,10 @@ export async function get30DaysMetrics() {
           new Date(quiz.created_at).getTime() <= endOfDay
       ).length || 0;
 
-    const { data: chats, chatsError } = await supabase
+    const { data: chats, error: chatsError } = await supabase
       .from("chats_doubt_solve")
       .select("id, createdAt, solved");
+
     const doubtsSolved =
       chats?.filter(
         (chat) =>

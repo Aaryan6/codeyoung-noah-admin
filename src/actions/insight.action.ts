@@ -114,6 +114,7 @@ export async function getDailyMetrics() {
     const { data: quizzesData, error } = await supabase
       .from("quiz")
       .select("id, created_at");
+    if (error) return null;
     const quizzes =
       quizzesData?.filter(
         (quiz) =>
@@ -122,9 +123,10 @@ export async function getDailyMetrics() {
           new Date(quiz.created_at).getTime() <= endOfDay
       ).length || 0;
 
-    const { data: chats, chatsError } = await supabase
+    const { data: chats, error: chatsError } = await supabase
       .from("chats_doubt_solve")
       .select("id, createdAt, solved");
+    if (chatsError) return null;
     const doubtsSolved =
       chats?.filter(
         (chat) =>
