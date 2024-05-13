@@ -29,7 +29,7 @@ export default async function DashboardPage() {
   const conversationAnalysis = await getConversationStatistics();
 
   const dailyMetrics = await getDailyMetrics();
-  const monthlyMetrics = await get30DaysMetrics();
+  // const monthlyMetrics = await get30DaysMetrics();
 
   const { chartData, groupedData } = await groupDataByDifficultyLevel();
 
@@ -59,7 +59,7 @@ export default async function DashboardPage() {
           </TabsContent>
           <TabsContent value='doubt-solving-metrics' className='space-y-4'>
             <OverallMetrics
-              data={monthlyMetrics}
+              data={dailyMetrics}
               resolutionRate={resolutionRate}
               conversationAnalysis={conversationAnalysis}
             />
