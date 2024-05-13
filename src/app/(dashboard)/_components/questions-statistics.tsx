@@ -15,13 +15,13 @@ const QuestionsStatistics = ({
     setHasLoaded(true);
   }, []);
   return (
-    <div className='py-16'>
+    <div className='py-8'>
       <div className='py-4 grid grid-cols-1 lg:grid-cols-3 gap-8'>
         <div className='lg:col-span-2'>
           {chartData && hasLoaded ? (
             <Card>
               <CardHeader>
-                <CardTitle>Questions Count by Bloom&apos;s Level</CardTitle>
+                <CardTitle>Questions Count by Difficulty Level</CardTitle>
               </CardHeader>
               <CardContent>
                 <BarChart width={550} height={350} data={chartData}>

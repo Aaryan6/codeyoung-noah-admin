@@ -8,7 +8,6 @@ import {
 import { getTotalGkQuizzes } from "@/actions/insight.action";
 
 export default async function Statistics() {
-  const totalQuestions = await getTotalQuestions();
   const totalQuizzes = await getTotalMathQuizzes();
   const totalTopics = await getTotalTopics();
   const totalUsers = await getTotalMathUsers();

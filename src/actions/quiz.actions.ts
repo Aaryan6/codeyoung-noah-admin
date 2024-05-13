@@ -161,3 +161,50 @@ export async function getGradeWiseMathQuizFigure() {
   }));
   return result;
 }
+
+export async function get30DaysMetrics() {
+  const supabase = createClient();
+  const metrics = [];
+
+  // metrics for the past 30 days
+  for (let i = 29; i >= 0; i--) {
+    const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+    const startOfDay = new Date(date).setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date).setHours(23, 59, 59, 999);
+
+    const { data: quizzes, error } = await supabase
+      .from("quiz")
+      .select("id, created_at");
+    const quizzesToday =
+      quizzes?.filter(
+        (quiz) =>
+          quiz.created_at &&
+          new Date(quiz.created_at).getTime() >= startOfDay &&
+          new Date(quiz.created_at).getTime() <= endOfDay
+      ).length || 0;
+
+    const { data: chats, chatsError } = await supabase
+      .from("chats_doubt_solve")
+      .select("id, createdAt, solved");
+    const doubtsSolvedToday =
+      chats?.filter(
+        (chat) =>
+          chat.createdAt &&
+          new Date(chat.createdAt).getTime() >= startOfDay &&
+          new Date(chat.createdAt).getTime() <= endOfDay &&
+          chat.solved
+      ).length || 0;
+
+    const dayMetrics = {
+      date: `${date.getDate()} ${date.toLocaleString("default", {
+        month: "short",
+      })}`, // DD MMM format
+      quizzesToday,
+      doubtsSolvedToday,
+    };
+
+    metrics.push(dayMetrics);
+  }
+
+  return metrics;
+}

@@ -12,11 +12,12 @@ import {
 } from "@/actions/insight.action";
 import QuestionsStatistics from "./_components/questions-statistics";
 import {
-  getConversationLengths,
   getConversationStatistics,
   getResolutionRate,
 } from "@/actions/doubt-solving.actions";
 import OverallMetrics from "./_components/overall-metrics";
+import { get30DaysMetrics } from "@/actions/quiz.actions";
+import Quiz7Days from "./_components/quiz-7-days";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -28,6 +29,7 @@ export default async function DashboardPage() {
   const conversationAnalysis = await getConversationStatistics();
 
   const dailyMetrics = await getDailyMetrics();
+  const monthlyMetrics = await get30DaysMetrics();
 
   const { chartData, groupedData } = await groupDataByDifficultyLevel();
 
@@ -45,7 +47,7 @@ export default async function DashboardPage() {
           </TabsList>
           <TabsContent value='overview' className='space-y-4'>
             <Statistics />
-
+            <Quiz7Days data={dailyMetrics} />
             {chartData && groupedData && (
               <QuestionsStatistics
                 chartData={chartData}
