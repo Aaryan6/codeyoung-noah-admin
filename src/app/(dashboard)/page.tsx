@@ -42,7 +42,9 @@ export default async function DashboardPage() {
         <Tabs defaultValue='overview' className='space-y-4'>
           <TabsList>
             <TabsTrigger value='overview'>Overview</TabsTrigger>
-            <TabsTrigger value='overall-metrics'>Overall Metrics</TabsTrigger>
+            <TabsTrigger value='doubt-solving-metrics'>
+              Doubt Solving Metrics
+            </TabsTrigger>
             <TabsTrigger value='user-analytics'>User Analytics</TabsTrigger>
           </TabsList>
           <TabsContent value='overview' className='space-y-4'>
@@ -55,9 +57,9 @@ export default async function DashboardPage() {
               />
             )}
           </TabsContent>
-          <TabsContent value='overall-metrics' className='space-y-4'>
+          <TabsContent value='doubt-solving-metrics' className='space-y-4'>
             <OverallMetrics
-              data={dailyMetrics}
+              data={monthlyMetrics}
               resolutionRate={resolutionRate}
               conversationAnalysis={conversationAnalysis}
             />

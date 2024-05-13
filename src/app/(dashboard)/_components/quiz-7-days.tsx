@@ -15,8 +15,6 @@ import {
 const Quiz7Days = ({ data }: { data: any }) => {
   const [isMounted, setIsMounted] = useState(false);
 
-  console.log(data);
-
   useEffect(() => {
     setIsMounted(true);
   }, []);

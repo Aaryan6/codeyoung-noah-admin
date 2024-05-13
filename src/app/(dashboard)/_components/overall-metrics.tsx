@@ -29,6 +29,7 @@ const OverallMetrics = ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
+  console.log(data[0]);
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -68,7 +69,7 @@ const OverallMetrics = ({
                 Average Conversation Length
               </CardTitle>
               <CardDescription>
-                {conversationAnalysis.averageConversationLength.toFixed(2)}{" "}
+                {conversationAnalysis.averageConversationLength.toFixed(0)}{" "}
                 Messages
               </CardDescription>
             </CardHeader>
@@ -77,7 +78,7 @@ const OverallMetrics = ({
       </Card>
       <Card>
         <CardHeader>
-          <CardTitle>Doubts Solved in Past 7 Days</CardTitle>
+          <CardTitle>Doubts Solved in Past 30 Days</CardTitle>
         </CardHeader>
         <CardContent>
           <ResponsiveContainer width='100%' height={350}>

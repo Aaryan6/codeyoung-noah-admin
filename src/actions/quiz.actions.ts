@@ -172,11 +172,11 @@ export async function get30DaysMetrics() {
     const startOfDay = new Date(date).setHours(0, 0, 0, 0);
     const endOfDay = new Date(date).setHours(23, 59, 59, 999);
 
-    const { data: quizzes, error } = await supabase
+    const { data: quizzesData, error } = await supabase
       .from("quiz")
       .select("id, created_at");
-    const quizzesToday =
-      quizzes?.filter(
+    const quizzes =
+      quizzesData?.filter(
         (quiz) =>
           quiz.created_at &&
           new Date(quiz.created_at).getTime() >= startOfDay &&
@@ -186,7 +186,7 @@ export async function get30DaysMetrics() {
     const { data: chats, chatsError } = await supabase
       .from("chats_doubt_solve")
       .select("id, createdAt, solved");
-    const doubtsSolvedToday =
+    const doubtsSolved =
       chats?.filter(
         (chat) =>
           chat.createdAt &&
@@ -199,8 +199,8 @@ export async function get30DaysMetrics() {
       date: `${date.getDate()} ${date.toLocaleString("default", {
         month: "short",
       })}`, // DD MMM format
-      quizzesToday,
-      doubtsSolvedToday,
+      quizzes,
+      doubtsSolved,
     };
 
     metrics.push(dayMetrics);
