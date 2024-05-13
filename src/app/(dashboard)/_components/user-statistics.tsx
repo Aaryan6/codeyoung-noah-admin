@@ -24,11 +24,8 @@ export default function UserStatistics() {
       setTotalQuestions(totalQuestions);
       const topics = await getTopics(useUser.userid!);
       setTotalTopics(topics);
-
       const insights = await getInsights(useUser.userid!);
-      console.log("insights", insights);
       const performance = await getPerformanceByTopic(useUser.userid!);
-      console.log("performance", performance);
     })();
   }, [useUser.userid]);
 

@@ -1,3 +1,4 @@
+"use server";
 import { createClient } from "@/lib/supabase/server";
 
 function capitalize(str: string) {
@@ -83,7 +84,6 @@ export const groupDataByDifficultyLevel = async () => {
       }
     }
 
-    console.log(groupedData);
     const chartData = Object.entries(groupedData)
       .sort((a, b) => {
         const levelOrder = ["easy", "medium", "hard"];
@@ -103,33 +103,49 @@ export const groupDataByDifficultyLevel = async () => {
 
 export async function getDailyMetrics() {
   const supabase = createClient();
-  const date = new Date();
-  const startOfDay = new Date(date).setHours(0, 0, 0, 0);
-  const endOfDay = new Date(date).setHours(23, 59, 59, 999);
+  const metrics = [];
 
-  const { data: quizzes, error } = await supabase
-    .from("quiz")
-    .select("id,submittedAt");
+  // Get metrics for the past 7 days
+  for (let i = 6; i >= 0; i--) {
+    const date = new Date(Date.now() - i * 24 * 60 * 60 * 1000);
+    const startOfDay = new Date(date).setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date).setHours(23, 59, 59, 999);
 
-  const quizzesToday = quizzes?.filter(
-    (quiz) =>
-      new Date(quiz.submittedAt).getTime() >= startOfDay &&
-      new Date(quiz.submittedAt).getTime() <= endOfDay
-  ).length;
+    const { data: quizzesData, error } = await supabase
+      .from("quiz")
+      .select("id, created_at");
+    const quizzes =
+      quizzesData?.filter(
+        (quiz) =>
+          quiz.created_at &&
+          new Date(quiz.created_at).getTime() >= startOfDay &&
+          new Date(quiz.created_at).getTime() <= endOfDay
+      ).length || 0;
 
-  const { data: chats, chatsError } = await supabase
-    .from("chats_doubt_solve")
-    .select("id,createdAt,solved");
+    const { data: chats, chatsError } = await supabase
+      .from("chats_doubt_solve")
+      .select("id, createdAt, solved");
+    const doubtsSolved =
+      chats?.filter(
+        (chat) =>
+          chat.createdAt &&
+          new Date(chat.createdAt).getTime() >= startOfDay &&
+          new Date(chat.createdAt).getTime() <= endOfDay &&
+          chat.solved
+      ).length || 0;
 
-  const doubtsSolvedToday = chats.filter(
-    (chat) =>
-      new Date(chat.createdAt).getTime() >= startOfDay &&
-      new Date(chat.createdAt).getTime() <= endOfDay &&
-      chat.solved
-  ).length;
+    const dayMetrics = {
+      date: `${date.getDate().toString().padStart(2, "0")}-${(
+        date.getMonth() + 1
+      )
+        .toString()
+        .padStart(2, "0")}-${date.getFullYear()}`, // DD-MM-YYYY format
+      quizzes,
+      doubtsSolved,
+    };
 
-  return {
-    quizzesToday,
-    doubtsSolvedToday,
-  };
+    metrics.push(dayMetrics);
+  }
+
+  return metrics;
 }

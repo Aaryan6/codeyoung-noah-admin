@@ -16,9 +16,6 @@ const QuestionsStatistics = ({
   }, []);
   return (
     <div className='py-16'>
-      <h2 className='text-3xl font-semibold tracking-tight'>
-        Questions by Difficulty Level
-      </h2>
       <div className='py-4 grid grid-cols-1 lg:grid-cols-3 gap-8'>
         <div className='lg:col-span-2'>
           {chartData && hasLoaded ? (

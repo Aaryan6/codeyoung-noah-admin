@@ -101,7 +101,7 @@ export async function getPerformanceByTopic(userId: string) {
         const question = quiz.questions.find(
           (q: any) => q.id === submission.questionId
         );
-        console.log(question);
+
         const topic = question.metadata.topic || "Uncategorized";
 
         if (!topicPerformance[topic]) {
@@ -117,8 +117,6 @@ export async function getPerformanceByTopic(userId: string) {
         }
       });
   });
-
-  console.log(topicPerformance);
 
   const topicPerformanceData = Object.entries(topicPerformance).map(
     ([topic, { totalQuestions, correctAnswers }]) => {

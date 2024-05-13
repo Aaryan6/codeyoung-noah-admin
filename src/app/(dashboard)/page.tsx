@@ -1,19 +1,22 @@
 import { Metadata } from "next";
 
-import { Button } from "@/components/ui/button";
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CalendarDateRangePicker } from "./_components/date-range-picker";
+
 import Statistics from "./_components/statistics";
 import { SelectUser } from "./_components/select-user";
 import UserStatistics from "./_components/user-statistics";
-import QuizStatistics from "./_components/quiz-statistics";
+
 import {
-  getTotalGkQuizzes,
-  getTotalQuizzes,
+  getDailyMetrics,
   groupDataByDifficultyLevel,
 } from "@/actions/insight.action";
 import QuestionsStatistics from "./_components/questions-statistics";
+import {
+  getConversationLengths,
+  getConversationStatistics,
+  getResolutionRate,
+} from "@/actions/doubt-solving.actions";
+import OverallMetrics from "./_components/overall-metrics";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -21,8 +24,10 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const gkQuiz = await getTotalGkQuizzes();
-  const totalQuiz = await getTotalQuizzes();
+  const resolutionRate = await getResolutionRate();
+  const conversationAnalysis = await getConversationStatistics();
+
+  const dailyMetrics = await getDailyMetrics();
 
   const { chartData, groupedData } = await groupDataByDifficultyLevel();
 
@@ -31,10 +36,6 @@ export default async function DashboardPage() {
       <div className='flex-1 space-y-4 p-8 pt-6'>
         <div className='flex items-center justify-between space-y-2'>
           <h2 className='text-3xl font-semibold tracking-tight'>Dashboard</h2>
-          <div className='flex items-center space-x-2'>
-            <CalendarDateRangePicker />
-            <Button>Download</Button>
-          </div>
         </div>
         <Tabs defaultValue='overview' className='space-y-4'>
           <TabsList>
@@ -44,24 +45,22 @@ export default async function DashboardPage() {
           </TabsList>
           <TabsContent value='overview' className='space-y-4'>
             <Statistics />
+
             {chartData && groupedData && (
               <QuestionsStatistics
                 chartData={chartData}
                 groupedData={groupedData || {}}
               />
             )}
-            <div className='flex-col flex pt-6'>
-              <div className='flex items-center justify-between space-y-2'>
-                <h2 className='text-3xl font-semibold tracking-tight'>
-                  Quiz Insights
-                </h2>
-              </div>
-              <div className='flex-1 space-y-4'>
-                <div className='pt-4'>
-                  <QuizStatistics gkQuiz={gkQuiz} totalQuiz={totalQuiz} />
-                </div>
-              </div>
-            </div>
+          </TabsContent>
+          <TabsContent value='overall-metrics' className='space-y-4'>
+            <OverallMetrics
+              data={dailyMetrics}
+              resolutionRate={resolutionRate}
+              conversationAnalysis={conversationAnalysis}
+            />
+          </TabsContent>
+          <TabsContent value='user-analytics' className='space-y-4'>
             <div className='flex-col flex pt-6'>
               <div className='flex items-center justify-between space-y-2'>
                 <h2 className='text-3xl font-semibold tracking-tight'>
@@ -76,14 +75,6 @@ export default async function DashboardPage() {
               </div>
             </div>
           </TabsContent>
-          <TabsContent
-            value='overall-metrics'
-            className='space-y-4'
-          ></TabsContent>
-          <TabsContent
-            value='user-analytics'
-            className='space-y-4'
-          ></TabsContent>
         </Tabs>
       </div>
     </div>
