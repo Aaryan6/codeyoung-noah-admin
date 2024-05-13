@@ -2,32 +2,32 @@
 import { createClient } from "@/lib/supabase/server";
 import { dateFormat } from "@/lib/utils";
 
-export async function getTotalMathQuizzes() {
+export async function getTotalGKQuizzes() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("id");
+  const { data, error } = await supabase.from("quiz_gk").select("id");
   if (error) console.log(error);
   return data?.length;
 }
 
-export async function getTotalQuestions() {
+export async function getTotalGKQuestions() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("db_math").select("id");
+  const { data, error } = await supabase.from("db_gk_quiz2").select("id");
   if (error) console.log(error);
   return data?.length;
 }
 
-export async function getTotalTopics() {
+export async function getTotalGKTopics() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("db_math").select("metadata");
+  const { data, error } = await supabase.from("db_gk_quiz2").select("metadata");
   if (error) console.log(error);
   const topics = data?.map((d) => d.metadata.topic);
   const uniqueTopics = Array.from(new Set(topics));
   return uniqueTopics?.length;
 }
 
-export async function getTotalMathUsers() {
+export async function getTotalGKUsers() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("userid");
+  const { data, error } = await supabase.from("quiz_gk").select("userid");
   if (error) console.log(error);
   const users = data?.map((d) => d.userid!);
   const realUsers = users?.filter((u) => u !== null);
@@ -35,9 +35,9 @@ export async function getTotalMathUsers() {
   return commonUsers?.length;
 }
 
-export async function getMathQuizFigure() {
+export async function getGKQuizFigure() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("created_at");
+  const { data, error } = await supabase.from("quiz_gk").select("created_at");
   if (error) console.log(error);
 
   const quizzesPerDay = data?.map((d: any) => dateFormat(d.created_at));
@@ -53,10 +53,10 @@ export async function getMathQuizFigure() {
 }
 
 // math quiz insights
-export const getNumberOfCompletedMathQuiz = async (userid: string) => {
+export const getNumberOfCompletedGKQuiz = async (userid: string) => {
   const supabase = createClient();
   const { data: allQuizes, error } = await supabase
-    .from("quiz")
+    .from("quiz_gk")
     .select("questions, submissions")
     .eq("userid", userid)
     .eq("complete", "True");
@@ -78,11 +78,11 @@ export const getNumberOfCompletedMathQuiz = async (userid: string) => {
   };
 };
 
-export async function getInCompletedMathQuiz(userId: string) {
+export async function getInCompletedGKQuiz(userId: string) {
   const supabase = createClient();
   const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000); // Calculate the timestamp for 2 hours ago
   const { data, error } = await supabase
-    .from("quiz")
+    .from("quiz_gk")
     .select("*")
     .eq("userid", userId)
     .eq("start", true)
@@ -95,9 +95,9 @@ export async function getInCompletedMathQuiz(userId: string) {
   return data;
 }
 
-export async function getDailyMathQuizFigure() {
+export async function getDailyGKQuizFigure() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("created_at");
+  const { data, error } = await supabase.from("quiz_gk").select("created_at");
   if (error) console.log(error);
 
   const quizzesPerDay = data?.map((d: any) => dateFormat(d.created_at));
@@ -113,9 +113,9 @@ export async function getDailyMathQuizFigure() {
 }
 
 //quizes per week
-export async function getWeeklyMathQuizFigure() {
+export async function getWeeklyGKQuizFigure() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("created_at");
+  const { data, error } = await supabase.from("quiz_gk").select("created_at");
   if (error) console.log(error);
 
   const quizzesPerWeek = data?.map((d: any) => {
@@ -142,9 +142,9 @@ function getWeekNumber(date: Date): number {
   return weekNumber;
 }
 
-export async function getGradeWiseMathQuizFigure() {
+export async function getGradeWiseGKQuizFigure() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("metadata");
+  const { data, error } = await supabase.from("quiz_gk").select("metadata");
   if (error) console.log(error);
 
   const gradeWiseQuiz = data
