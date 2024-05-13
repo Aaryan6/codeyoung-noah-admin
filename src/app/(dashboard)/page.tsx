@@ -39,6 +39,8 @@ export default async function DashboardPage() {
         <Tabs defaultValue='overview' className='space-y-4'>
           <TabsList>
             <TabsTrigger value='overview'>Overview</TabsTrigger>
+            <TabsTrigger value='overall-metrics'>Overall Metrics</TabsTrigger>
+            <TabsTrigger value='user-analytics'>User Analytics</TabsTrigger>
           </TabsList>
           <TabsContent value='overview' className='space-y-4'>
             <Statistics />
@@ -74,6 +76,14 @@ export default async function DashboardPage() {
               </div>
             </div>
           </TabsContent>
+          <TabsContent
+            value='overall-metrics'
+            className='space-y-4'
+          ></TabsContent>
+          <TabsContent
+            value='user-analytics'
+            className='space-y-4'
+          ></TabsContent>
         </Tabs>
       </div>
     </div>
