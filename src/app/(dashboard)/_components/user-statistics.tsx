@@ -3,6 +3,8 @@ import StatsCard from "@/components/stats-card";
 import { useEffect, useState } from "react";
 import useUserStore from "@/lib/zustand/user.select";
 import {
+  getInsights,
+  getPerformanceByTopic,
   getTopics,
   getTotalQuestions,
   getTotalQuizzes,
@@ -22,6 +24,11 @@ export default function UserStatistics() {
       setTotalQuestions(totalQuestions);
       const topics = await getTopics(useUser.userid!);
       setTotalTopics(topics);
+
+      const insights = await getInsights(useUser.userid!);
+      console.log("insights", insights);
+      const performance = await getPerformanceByTopic(useUser.userid!);
+      console.log("performance", performance);
     })();
   }, [useUser.userid]);
 

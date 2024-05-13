@@ -1,4 +1,8 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
+
+function capitalize(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
 
 export async function getTotalQuizzes() {
   const supabase = createClient();
@@ -41,10 +45,6 @@ export async function getQuestionsCountByBloomsLevel() {
   return bloomsLevelsQuestions;
 }
 
-function capitalize(str: string) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
-}
-
 export const groupDataByDifficultyLevel = async () => {
   const supabase = createClient();
 
@@ -84,12 +84,15 @@ export const groupDataByDifficultyLevel = async () => {
     }
 
     console.log(groupedData);
-    const chartData = Object.entries(groupedData).map(
-      ([difficultyLevel, { count }]) => ({
+    const chartData = Object.entries(groupedData)
+      .sort((a, b) => {
+        const levelOrder = ["easy", "medium", "hard"];
+        return levelOrder.indexOf(a[0]) - levelOrder.indexOf(b[0]);
+      })
+      .map(([difficultyLevel, { count }]) => ({
         difficultyLevel: capitalize(difficultyLevel),
         count,
-      })
-    );
+      }));
 
     return { chartData, groupedData };
   } catch (error) {
@@ -97,3 +100,36 @@ export const groupDataByDifficultyLevel = async () => {
     throw error;
   }
 };
+
+export async function getDailyMetrics() {
+  const supabase = createClient();
+  const date = new Date();
+  const startOfDay = new Date(date).setHours(0, 0, 0, 0);
+  const endOfDay = new Date(date).setHours(23, 59, 59, 999);
+
+  const { data: quizzes, error } = await supabase
+    .from("quiz")
+    .select("id,submittedAt");
+
+  const quizzesToday = quizzes?.filter(
+    (quiz) =>
+      new Date(quiz.submittedAt).getTime() >= startOfDay &&
+      new Date(quiz.submittedAt).getTime() <= endOfDay
+  ).length;
+
+  const { data: chats, chatsError } = await supabase
+    .from("chats_doubt_solve")
+    .select("id,createdAt,solved");
+
+  const doubtsSolvedToday = chats.filter(
+    (chat) =>
+      new Date(chat.createdAt).getTime() >= startOfDay &&
+      new Date(chat.createdAt).getTime() <= endOfDay &&
+      chat.solved
+  ).length;
+
+  return {
+    quizzesToday,
+    doubtsSolvedToday,
+  };
+}
