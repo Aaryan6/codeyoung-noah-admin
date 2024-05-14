@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar";
@@ -24,9 +24,9 @@ export default function RootLayout({
       <body className={poppins.className}>
         <ThemeProvider
           attribute='class'
-          defaultTheme='system'
-          enableSystem
+          defaultTheme='light'
           disableTransitionOnChange
+          enableSystem={false}
         >
           <main className='flex flex-col h-full'>
             <Navbar />

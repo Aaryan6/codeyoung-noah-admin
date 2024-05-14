@@ -1,5 +1,4 @@
 "use client";
-import { MainNav } from "@/app/(dashboard)/_components/main-nav";
 import { Search } from "@/app/(dashboard)/_components/search";
 import { ThemeToggle } from "./theme-toggle";
 import { UserNav } from "@/app/(dashboard)/_components/user-nav";
