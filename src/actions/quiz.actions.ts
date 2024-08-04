@@ -20,9 +20,10 @@ export async function getTotalTopics() {
   const supabase = createClient();
   const { data, error } = await supabase.from("db_math").select("metadata");
   if (error) console.log(error);
-  const topics = data?.map((d) => d.metadata.topic);
-  const uniqueTopics = Array.from(new Set(topics));
-  return uniqueTopics?.length;
+  // const topics = data?.map((d) => d.metadata?.topic);
+  // const uniqueTopics = Array.from(new Set(topics));
+  // return uniqueTopics?.length;
+  return data?.length;
 }
 
 export async function getTotalMathUsers() {

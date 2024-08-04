@@ -1,19 +1,18 @@
 import StatsCard from "@/components/stats-card";
-import {
-  getTotalQuestions,
-  getTotalMathQuizzes,
-  getTotalTopics,
-  getTotalMathUsers,
-} from "@/actions/quiz.actions";
-import { getTotalGkQuizzes } from "@/actions/insight.action";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default async function Statistics() {
-  const totalQuizzes = await getTotalMathQuizzes();
-  const totalTopics = await getTotalTopics();
-  const totalUsers = await getTotalMathUsers();
-  const totalGkQuizzes = await getTotalGkQuizzes();
-
+export default function Statistics({
+  totalQuizzes,
+  totalGkQuizzes,
+  totalTopics,
+  totalUsers,
+}: {
+  totalQuizzes: number;
+  totalGkQuizzes: number;
+  totalTopics: number;
+  totalUsers: number;
+}) {
   return (
     <Card>
       <CardHeader>
