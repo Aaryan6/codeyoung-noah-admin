@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/navbar";
 
-const poppins = Poppins({
+const outfit = Outfit({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
@@ -21,18 +20,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={poppins.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          disableTransitionOnChange
-          enableSystem={false}
-        >
-          <main className="flex flex-col h-full">
-            <Navbar />
-            {children}
-          </main>
-        </ThemeProvider>
+      <body className={outfit.className}>
+        <main className="flex flex-col h-full">
+          <Navbar />
+          {children}
+        </main>
       </body>
     </html>
   );
