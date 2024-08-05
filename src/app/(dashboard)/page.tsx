@@ -18,6 +18,7 @@ import {
 import OverallMetrics from "./_components/overall-metrics";
 import { get30DaysMetrics } from "@/actions/quiz.actions";
 import Quiz7Days from "./_components/quiz-7-days";
+import { SelectDatabase } from "./_components/select-database";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -25,57 +26,72 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const resolutionRate = await getResolutionRate();
-  const conversationAnalysis = await getConversationStatistics();
+  // const resolutionRate = await getResolutionRate();
+  // const conversationAnalysis = await getConversationStatistics();
 
-  const dailyMetrics = await getDailyMetrics();
-  const monthlyMetrics = await get30DaysMetrics();
+  // const dailyMetrics = await getDailyMetrics();
+  // const monthlyMetrics = await get30DaysMetrics();
 
-  const { chartData, groupedData } = await groupDataByDifficultyLevel();
+  // const { chartData, groupedData } = await groupDataByDifficultyLevel();
 
   return (
-    <div className='mx-auto w-full max-w-7xl flex-col flex'>
-      <div className='flex-1 space-y-4 p-8 pt-6'>
-        <div className='flex items-center justify-between space-y-2'>
-          <h2 className='text-3xl font-semibold tracking-tight'>Dashboard</h2>
+    <div className="mx-auto w-full max-w-7xl flex-col flex">
+      <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex items-center justify-between space-y-2">
+          <h2 className="text-3xl font-semibold tracking-tight">Dashboard</h2>
         </div>
-        <Tabs defaultValue='overview' className='space-y-4'>
+        <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
-            <TabsTrigger value='overview'>Overview</TabsTrigger>
-            <TabsTrigger value='doubt-solving-metrics'>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="doubt-solving-metrics">
               Doubt Solving Metrics
             </TabsTrigger>
-            <TabsTrigger value='user-analytics'>User Analytics</TabsTrigger>
+            <TabsTrigger value="user-analytics">User Analytics</TabsTrigger>
+            <TabsTrigger value="databases">Database Analytics</TabsTrigger>
           </TabsList>
-          <TabsContent value='overview' className='space-y-4'>
+          <TabsContent value="overview" className="space-y-4">
             <Statistics />
-            <Quiz7Days data={dailyMetrics} />
+            {/* <Quiz7Days data={dailyMetrics} />
             {chartData && groupedData && (
               <QuestionsStatistics
                 chartData={chartData}
                 groupedData={groupedData || {}}
               />
-            )}
+            )} */}
           </TabsContent>
-          <TabsContent value='doubt-solving-metrics' className='space-y-4'>
-            <OverallMetrics
+          <TabsContent value="doubt-solving-metrics" className="space-y-4">
+            {/* <OverallMetrics
               data={monthlyMetrics}
               resolutionRate={resolutionRate}
               conversationAnalysis={conversationAnalysis}
-            />
+            /> */}
           </TabsContent>
-          <TabsContent value='user-analytics' className='space-y-4'>
-            <div className='flex-col flex pt-6'>
-              <div className='flex items-center justify-between space-y-2'>
-                <h2 className='text-3xl font-semibold tracking-tight'>
+          <TabsContent value="user-analytics" className="space-y-4">
+            <div className="flex-col flex pt-6">
+              <div className="flex items-center justify-between space-y-2">
+                <h2 className="text-3xl font-semibold tracking-tight">
                   User Insights
                 </h2>
               </div>
-              <div className='flex-1 space-y-4'>
-                <div className='pt-4'>
+              <div className="flex-1 space-y-4">
+                <div className="pt-4">
                   <SelectUser />
                 </div>
                 <UserStatistics />
+              </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="databases" className="space-y-4">
+            <div className="flex-col flex pt-6">
+              <div className="flex items-center justify-between space-y-2">
+                <h2 className="text-3xl font-semibold tracking-tight">
+                  DataBase Analytics
+                </h2>
+              </div>
+              <div className="flex-1 space-y-4">
+                <div className="pt-4">
+                  <SelectDatabase />
+                </div>
               </div>
             </div>
           </TabsContent>

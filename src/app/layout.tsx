@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "QuizApp - Admin Dashboard",
+  title: "CodeYoung Noah - Admin Dashboard",
   description: "Admin dashboard for QuizApp.",
 };
 
@@ -20,15 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body className={poppins.className}>
         <ThemeProvider
-          attribute='class'
-          defaultTheme='light'
+          attribute="class"
+          defaultTheme="light"
           disableTransitionOnChange
           enableSystem={false}
         >
-          <main className='flex flex-col h-full'>
+          <main className="flex flex-col h-full">
             <Navbar />
             {children}
           </main>
