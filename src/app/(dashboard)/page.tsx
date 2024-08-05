@@ -1,20 +1,14 @@
 import { Metadata } from "next";
 import {
-  getConversationStatistics,
-  getResolutionRate,
-} from "@/actions/doubt-solving.actions";
-import {
-  getDailyMetrics,
-  groupDataByDifficultyLevel,
-} from "@/actions/insight.action";
-import {
-  get30DaysMetrics,
-  getTotalMathQuizzes,
+  getTotalQuizzes,
   getTotalMathUsers,
   getTotalTopics,
 } from "@/actions/quiz.actions";
 import Metrics from "@/components/metrics";
 import { getTotalGKQuizzes } from "@/actions/gk-quiz.actions";
+import { SubjectCircleChart } from "@/components/subject-circle-chart";
+import Statistics from "./_components/statistics";
+import { WeekAreaChart } from "@/components/quiz/week-area-chart";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -22,35 +16,37 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const resolutionRate = await getResolutionRate();
-  const conversationAnalysis = await getConversationStatistics();
-
-  const dailyMetrics = await getDailyMetrics();
-  const monthlyMetrics = await get30DaysMetrics();
-
-  const { chartData, groupedData } = await groupDataByDifficultyLevel();
-
-  // Stats
-  const totalQuizzes = await getTotalMathQuizzes();
-  const totalTopics = await getTotalTopics();
-  const totalUsers = await getTotalMathUsers();
-  const totalGkQuizzes = await getTotalGKQuizzes();
+  const [quizzes, totalTopics, totalUsers, totalGkQuizzes] = await Promise.all([
+    getTotalQuizzes(),
+    getTotalTopics(),
+    getTotalMathUsers(),
+    getTotalGKQuizzes(),
+  ]);
 
   return (
-    <div className="mx-auto w-full max-w-7xl flex-col flex">
-      <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="w-full flex-col flex p-8">
+      <div className="flex-1 space-y-4">
         <div className="flex items-center justify-between space-y-2">
           <h2 className="text-3xl font-semibold tracking-tight">Dashboard</h2>
         </div>
-        <Metrics
+        <div className="flex gap-4">
+          <Statistics
+            quizzes={quizzes!}
+            totalTopics={totalTopics!}
+            totalUsers={totalUsers!}
+            totalGKQuizzes={totalGkQuizzes!}
+          />
+          <SubjectCircleChart quizzes={quizzes} />
+        </div>
+        <WeekAreaChart data={quizzes.quizzesLast7Days!} />
+        {/* <Metrics
           resolutionRate={resolutionRate}
           conversationAnalysis={conversationAnalysis}
           dailyMetrics={dailyMetrics}
           monthlyMetrics={monthlyMetrics}
           chartData={chartData}
           groupedData={groupedData}
-          stats={{ totalGkQuizzes, totalQuizzes, totalTopics, totalUsers }}
-        />
+        /> */}
       </div>
     </div>
   );

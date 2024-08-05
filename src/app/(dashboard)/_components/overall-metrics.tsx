@@ -29,12 +29,11 @@ const OverallMetrics = ({
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
-  console.log(data[0]);
   useEffect(() => {
     setIsMounted(true);
   }, []);
   return (
-    <div className='flex flex-col space-y-12'>
+    <div className="flex flex-col space-y-12">
       <Card>
         <CardHeader>
           <CardTitle>Doubt Solving Metrics</CardTitle>
@@ -42,22 +41,22 @@ const OverallMetrics = ({
             Doubt resolution rate and conversation analysis
           </CardDescription>
         </CardHeader>
-        <CardContent className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+        <CardContent className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <Card>
             <CardHeader>
-              <CardTitle className='text-lg'>Total Doubts</CardTitle>
+              <CardTitle className="text-lg">Total Doubts</CardTitle>
               <CardDescription>{resolutionRate.totalChats}</CardDescription>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle className='text-lg'>Solved Doubts</CardTitle>
+              <CardTitle className="text-lg">Solved Doubts</CardTitle>
               <CardDescription>{resolutionRate.solvedChats}</CardDescription>
             </CardHeader>
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle className='text-lg'>Doubt Resolution Rate</CardTitle>
+              <CardTitle className="text-lg">Doubt Resolution Rate</CardTitle>
               <CardDescription>
                 {resolutionRate.resolutionRate.toFixed(1)} %
               </CardDescription>
@@ -65,7 +64,7 @@ const OverallMetrics = ({
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle className='text-lg'>
+              <CardTitle className="text-lg">
                 Average Conversation Length
               </CardTitle>
               <CardDescription>
@@ -81,24 +80,24 @@ const OverallMetrics = ({
           <CardTitle>Doubts Solved in Past 30 Days</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width='100%' height={350}>
+          <ResponsiveContainer width="100%" height={350}>
             <LineChart
               width={730}
               height={350}
               data={data}
               margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
-              <CartesianGrid strokeDasharray='3 3' />
-              <XAxis dataKey='date' />
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
               <YAxis />
               <Tooltip />
               <Legend />
 
               <Line
-                type='monotone'
-                dataKey='doubtsSolved'
-                stroke='#82ca9d'
-                name='Doubts Solved'
+                type="monotone"
+                dataKey="doubtsSolved"
+                stroke="#82ca9d"
+                name="Doubts Solved"
               />
             </LineChart>
           </ResponsiveContainer>

@@ -2,11 +2,67 @@
 import { createClient } from "@/lib/supabase/server";
 import { dateFormat } from "@/lib/utils";
 
-export async function getTotalMathQuizzes() {
+const getSubject = (subject_id: number) => {
+  switch (subject_id) {
+    case 1:
+      return "math";
+    case 2:
+      return "science";
+    case 3:
+      return "english";
+    default:
+      return "";
+  }
+};
+
+export async function getTotalQuizzes() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("quiz").select("id");
-  if (error) console.log(error);
-  return data?.length;
+  const { data, error } = await supabase
+    .from("quiz")
+    .select("id,subject,subject_id, created_at");
+  const subjectWiseQuizzes = data?.map((d) => {
+    return {
+      id: d.id,
+      subject: d.subject
+        ? d.subject
+        : d.subject_id
+        ? getSubject(d.subject_id)
+        : "",
+      subject_id: d.subject_id,
+    };
+  });
+
+  const mathQuizzes = subjectWiseQuizzes?.filter(
+    (quiz) => quiz.subject === "math"
+  );
+
+  const scienceQuizzes = subjectWiseQuizzes?.filter(
+    (quiz) => quiz.subject === "science"
+  );
+
+  const englishQuizzes = subjectWiseQuizzes?.filter(
+    (quiz) => quiz.subject === "english"
+  );
+
+  const sevenDaysAgo = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000);
+  const today = new Date();
+  const quizzesLast7Days = data
+    ?.sort(
+      (a, b) =>
+        new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+    )
+    .filter((quiz) => {
+      const createdAt = new Date(quiz.created_at);
+      return createdAt > sevenDaysAgo && createdAt <= today;
+    });
+
+  return {
+    totalQuizzes: data?.length,
+    mathQuizzes: mathQuizzes?.length,
+    scienceQuizzes: scienceQuizzes?.length,
+    englishQuizzes: englishQuizzes?.length,
+    quizzesLast7Days: quizzesLast7Days,
+  };
 }
 
 export async function getTotalQuestions() {
