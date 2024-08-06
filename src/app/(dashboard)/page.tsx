@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import {
   getTotalQuizzes,
-  getTotalMathUsers,
+  getTotalUsers,
   getTotalTopics,
 } from "@/actions/quiz.actions";
 import Metrics from "@/components/metrics";
@@ -19,7 +19,7 @@ export default async function DashboardPage() {
   const [quizzes, totalTopics, totalUsers, totalGkQuizzes] = await Promise.all([
     getTotalQuizzes(),
     getTotalTopics(),
-    getTotalMathUsers(),
+    getTotalUsers(),
     getTotalGKQuizzes(),
   ]);
 

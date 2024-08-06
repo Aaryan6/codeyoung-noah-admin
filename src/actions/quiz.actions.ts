@@ -74,7 +74,7 @@ export async function getTotalQuestions() {
 
 export async function getTotalTopics() {
   const supabase = createClient();
-  const { data, error } = await supabase.from("db_math").select("metadata");
+  const { data, error } = await supabase.from("topic").select("id");
   if (error) console.log(error);
   // const topics = data?.map((d) => d.metadata?.topic);
   // const uniqueTopics = Array.from(new Set(topics));
@@ -82,7 +82,7 @@ export async function getTotalTopics() {
   return data?.length;
 }
 
-export async function getTotalMathUsers() {
+export async function getTotalUsers() {
   const supabase = createClient();
   const { data, error } = await supabase.from("quiz").select("userid");
   if (error) console.log(error);
