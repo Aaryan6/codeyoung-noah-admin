@@ -36,4 +36,5 @@ const links = [
   { href: "/", label: "Overview" },
   { href: "/analytics-doubt-solve", label: "Doubt Solving" },
   { href: "/analytics-questions", label: "Question Analytics" },
+  { href: "/student-analytics", label: "Student Metrics" },
 ];

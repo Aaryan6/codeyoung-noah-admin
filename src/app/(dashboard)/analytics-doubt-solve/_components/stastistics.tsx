@@ -6,19 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import React, { useEffect, useState } from "react";
-import {
-  CartesianGrid,
-  LineChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Line,
-  ResponsiveContainer,
-} from "recharts";
-
-const OverallMetrics = ({
+import React from "react";
+const DoubtSolvingMetrics = ({
   data,
   conversationAnalysis,
   resolutionRate,
@@ -27,11 +16,6 @@ const OverallMetrics = ({
   conversationAnalysis: any;
   resolutionRate: any;
 }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
   return (
     <div className="flex flex-col space-y-12">
       <Card>
@@ -75,36 +59,8 @@ const OverallMetrics = ({
           </Card>
         </CardContent>
       </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Doubts Solved in Past 30 Days</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={350}>
-            <LineChart
-              width={730}
-              height={350}
-              data={data}
-              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-
-              <Line
-                type="monotone"
-                dataKey="doubtsSolved"
-                stroke="#82ca9d"
-                name="Doubts Solved"
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
     </div>
   );
 };
 
-export default OverallMetrics;
+export default DoubtSolvingMetrics;

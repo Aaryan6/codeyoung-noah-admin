@@ -101,7 +101,7 @@ export const groupDataByDifficultyLevel = async () => {
   }
 };
 
-export async function getDailyMetrics() {
+export async function getWeeklyDoubtSolveMetrics() {
   const supabase = createClient();
   const metrics = [];
 
@@ -111,23 +111,11 @@ export async function getDailyMetrics() {
     const startOfDay = new Date(date).setHours(0, 0, 0, 0);
     const endOfDay = new Date(date).setHours(23, 59, 59, 999);
 
-    const { data: quizzesData, error } = await supabase
-      .from("quiz")
-      .select("id, created_at");
-    if (error) return null;
-    const quizzes =
-      quizzesData?.filter(
-        (quiz) =>
-          quiz.created_at &&
-          new Date(quiz.created_at).getTime() >= startOfDay &&
-          new Date(quiz.created_at).getTime() <= endOfDay
-      ).length || 0;
-
     const { data: chats, error: chatsError } = await supabase
       .from("chats_doubt_solve")
       .select("id, createdAt, solved");
     if (chatsError) return null;
-    const doubtsSolved =
+    const doubtsolved =
       chats?.filter(
         (chat) =>
           chat.createdAt &&
@@ -141,9 +129,8 @@ export async function getDailyMetrics() {
         date.getMonth() + 1
       )
         .toString()
-        .padStart(2, "0")}-${date.getFullYear()}`, // DD-MM-YYYY format
-      quizzes,
-      doubtsSolved,
+        .padStart(2, "0")}-${date.getFullYear()}`,
+      doubtsolved,
     };
 
     metrics.push(dayMetrics);

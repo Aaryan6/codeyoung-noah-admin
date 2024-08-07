@@ -3,8 +3,9 @@ import {
   getConversationStatistics,
   getResolutionRate,
 } from "@/actions/doubt-solving.actions";
-import { getDailyMetrics } from "@/actions/insight.action";
-import OverallMetrics from "../_components/overall-metrics";
+import { getWeeklyDoubtSolveMetrics } from "@/actions/insight.action";
+import Statistics from "./_components/stastistics";
+import { DoubtSolveBarChart } from "./_components/doubt-solve-bar-chart";
 
 export const metadata: Metadata = {
   title: "Doubt Solve Analytics",
@@ -12,11 +13,11 @@ export const metadata: Metadata = {
 };
 
 export default async function AnalyticsDoubtSolve() {
-  const [resolutionRate, conversationAnalysis, monthlyMetrics] =
+  const [resolutionRate, conversationAnalysis, weeklyMetrics] =
     await Promise.all([
       getResolutionRate(),
       getConversationStatistics(),
-      getDailyMetrics(),
+      getWeeklyDoubtSolveMetrics(),
     ]);
 
   return (
@@ -27,11 +28,12 @@ export default async function AnalyticsDoubtSolve() {
             Doubt Solve Analytics
           </h2>
         </div>
-        <OverallMetrics
-          data={monthlyMetrics}
+        <Statistics
+          data={weeklyMetrics}
           resolutionRate={resolutionRate}
           conversationAnalysis={conversationAnalysis}
         />
+        <DoubtSolveBarChart weeklyMetrics={weeklyMetrics!} />
       </div>
     </div>
   );

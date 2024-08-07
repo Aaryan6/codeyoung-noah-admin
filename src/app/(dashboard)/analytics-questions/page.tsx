@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { groupDataByDifficultyLevel } from "@/actions/insight.action";
-import QuestionsStatistics from "../_components/questions-statistics";
+import QuestionsStatistics from "./_components/questions-statistics";
 
 export const metadata: Metadata = {
   title: "Doubt Solve Analytics",

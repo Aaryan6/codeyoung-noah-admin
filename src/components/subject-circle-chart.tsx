@@ -17,6 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import useDateRange from "@/lib/zustand/use-date-range";
 
 const chartConfig = {
   quiz: {
@@ -42,37 +43,100 @@ const chartConfig = {
 
 type Props = {
   quizzes: {
-    totalQuizzes: number | undefined;
-    mathQuizzes: number | undefined;
-    scienceQuizzes: number | undefined;
-    englishQuizzes: number | undefined;
+    totalQuizzes:
+      | {
+          id: string;
+          subject: string;
+          subject_id: number;
+          created_at: string;
+        }[]
+      | undefined
+      | null;
+    mathQuizzes:
+      | {
+          id: string;
+          subject: string;
+          subject_id: number;
+          created_at: string;
+        }[]
+      | undefined
+      | null;
+    scienceQuizzes:
+      | {
+          id: string;
+          subject: string;
+          subject_id: number;
+          created_at: string;
+        }[]
+      | undefined
+      | null;
+    englishQuizzes:
+      | {
+          id: string;
+          subject: string;
+          subject_id: number;
+          created_at: string;
+        }[]
+      | undefined
+      | null;
   };
 };
 
 export function SubjectCircleChart({ quizzes }: Props) {
+  const dateRange = useDateRange();
+
+  const ifDateRange =
+    dateRange != undefined &&
+    dateRange.from != undefined &&
+    dateRange.to != undefined;
+  const filteredMathQuizzes = quizzes.mathQuizzes?.filter((q) =>
+    dateRange.from != undefined && dateRange.to != undefined
+      ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
+        new Date(q.created_at).getTime() <= dateRange.to?.getTime()
+      : true
+  );
+  const filteredScienceQuizzes = quizzes.scienceQuizzes?.filter((q) =>
+    dateRange.from != undefined && dateRange.to != undefined
+      ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
+        new Date(q.created_at).getTime() <= dateRange.to?.getTime()
+      : true
+  );
+  const filteredEnglishQuizzes = quizzes.englishQuizzes?.filter((q) =>
+    dateRange.from != undefined && dateRange.to != undefined
+      ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
+        new Date(q.created_at).getTime() <= dateRange.to?.getTime()
+      : true
+  );
+  const filteredTotalQuizzes = quizzes.totalQuizzes?.filter((q) =>
+    dateRange.from != undefined && dateRange.to != undefined
+      ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
+        new Date(q.created_at).getTime() <= dateRange.to?.getTime()
+      : true
+  );
+
   const chartData = [
     {
       subject: "math",
-      quiz: quizzes.mathQuizzes ?? 0,
+      quiz: filteredMathQuizzes?.length ?? 0,
       fill: "#2662d9",
     },
     {
       subject: "science",
-      quiz: quizzes.scienceQuizzes ?? 0,
+      quiz: filteredScienceQuizzes?.length ?? 0,
       fill: "#e23670",
     },
     {
       subject: "english",
-      quiz: quizzes.englishQuizzes ?? 0,
+      quiz: filteredEnglishQuizzes?.length ?? 0,
       fill: "#e78b30",
     },
     {
       subject: "other",
-      quiz: quizzes.totalQuizzes
-        ? quizzes.totalQuizzes -
-          (quizzes.mathQuizzes ?? 0) -
-          (quizzes.scienceQuizzes ?? 0) -
-          (quizzes.englishQuizzes ?? 0)
+      quiz: filteredTotalQuizzes?.length
+        ? filteredTotalQuizzes.length -
+          (filteredMathQuizzes?.length ?? 0) -
+          (filteredScienceQuizzes?.length ?? 0) -
+          (filteredEnglishQuizzes?.length ?? 0)
         : 0,
       fill: "#626262",
     },
@@ -115,14 +179,14 @@ export function SubjectCircleChart({ quizzes }: Props) {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {quizzes.totalQuizzes!.toLocaleString()}
+                          {filteredTotalQuizzes!.length.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Quizzes
                         </tspan>
                       </text>
                     );

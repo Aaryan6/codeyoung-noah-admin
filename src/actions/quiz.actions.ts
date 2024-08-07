@@ -29,6 +29,7 @@ export async function getTotalQuizzes() {
         ? getSubject(d.subject_id)
         : "",
       subject_id: d.subject_id,
+      created_at: d.created_at,
     };
   });
 
@@ -46,7 +47,7 @@ export async function getTotalQuizzes() {
 
   const sevenDaysAgo = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000);
   const today = new Date();
-  const quizzesLast7Days = data
+  const quizzesLast7Days = subjectWiseQuizzes
     ?.sort(
       (a, b) =>
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
@@ -57,10 +58,10 @@ export async function getTotalQuizzes() {
     });
 
   return {
-    totalQuizzes: data?.length,
-    mathQuizzes: mathQuizzes?.length,
-    scienceQuizzes: scienceQuizzes?.length,
-    englishQuizzes: englishQuizzes?.length,
+    totalQuizzes: data,
+    mathQuizzes: mathQuizzes,
+    scienceQuizzes: scienceQuizzes,
+    englishQuizzes: englishQuizzes,
     quizzesLast7Days: quizzesLast7Days,
   };
 }

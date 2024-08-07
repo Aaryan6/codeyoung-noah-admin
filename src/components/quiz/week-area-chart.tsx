@@ -18,6 +18,8 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { formatDateTime } from "@/lib/utils";
+import useDateRange from "@/lib/zustand/use-date-range";
+import { useEffect } from "react";
 
 const chartConfig = {
   quizzes: {
@@ -36,30 +38,32 @@ export function WeekAreaChart({
     created_at: string;
   }[];
 }) {
+  const dateRange = useDateRange();
   const chartData = Object.values(
-    data.reduce(
-      (
-        acc: {
-          [key: string]: {
-            date: string;
-            quizzes: number;
-          };
-        },
-        curr
-      ) => {
-        const date = formatDateTime(curr.created_at).dateOnly; // Extract the date from the name
-        if (!acc[date]) {
-          acc[date] = {
-            date: date,
-            quizzes: 0,
-          };
-        }
-        acc[date].quizzes += 1;
-        return acc;
-      },
-      {}
-    )
+    data.reduce((acc: { [key: string]: any }, curr) => {
+      const date = formatDateTime(curr.created_at).dateOnly;
+      const subject = (curr.subject?.toLowerCase() || "unknown") as any;
+
+      if (!acc[date]) {
+        acc[date] = {
+          date,
+          quizzes: 0,
+          math: 0,
+          science: 0,
+          english: 0,
+        };
+      }
+
+      acc[date].quizzes += 1;
+
+      if (subject in acc[date]) {
+        acc[date][subject] += 1;
+      }
+
+      return acc;
+    }, {})
   );
+
   return (
     <Card>
       <CardHeader>
@@ -69,7 +73,7 @@ export function WeekAreaChart({
         </CardDescription>
       </CardHeader>
       <CardContent className="">
-        <ChartContainer config={chartConfig} className="max-h-[20rem] w-full">
+        <ChartContainer config={chartConfig} className="max-h-[25rem] w-full">
           <AreaChart
             accessibilityLayer
             data={chartData}
@@ -101,8 +105,29 @@ export function WeekAreaChart({
               dataKey="quizzes"
               type="natural"
               fill="#244faa"
-              fillOpacity={0.4}
+              fillOpacity={0.5}
               stroke="#244faa"
+            />
+            <Area
+              dataKey="math"
+              type="natural"
+              fill="#2662d9"
+              fillOpacity={0.5}
+              stroke="#2662d9"
+            />
+            <Area
+              dataKey="science"
+              type="natural"
+              fill="#e23670"
+              fillOpacity={0.5}
+              stroke="#e23670"
+            />
+            <Area
+              dataKey="english"
+              type="natural"
+              fill="#e78b30"
+              fillOpacity={0.5}
+              stroke="#e78b30"
             />
           </AreaChart>
         </ChartContainer>

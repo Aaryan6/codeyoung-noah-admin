@@ -1,12 +1,10 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import OverallMetrics from "@/app/(dashboard)/_components/overall-metrics";
-import QuestionsStatistics from "@/app/(dashboard)/_components/questions-statistics";
-import Quiz7Days from "@/app/(dashboard)/_components/quiz-7-days";
-import { SelectUser } from "@/app/(dashboard)/_components/select-user";
-import Statistics from "@/app/(dashboard)/_components/statistics";
-import UserStatistics from "@/app/(dashboard)/_components/user-statistics";
+import OverallMetrics from "@/app/(dashboard)/analytics-doubt-solve/_components/stastistics";
+import QuestionsStatistics from "@/app/(dashboard)/analytics-questions/_components/questions-statistics";
+import { SelectUser } from "@/components/select-user";
+// import UserStatistics from "@/app/(dashboard)/_components/user-statistics";
 
 const Metrics = ({
   resolutionRate,
@@ -58,7 +56,7 @@ const Metrics = ({
             <div className="pt-4">
               <SelectUser />
             </div>
-            <UserStatistics />
+            {/* <UserStatistics /> */}
           </div>
         </div>
       </TabsContent>
