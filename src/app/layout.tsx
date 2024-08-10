@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
+import Providers from "@/lib/providers/providers";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -21,10 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={outfit.className}>
-        <main className="flex flex-col h-full">
-          <Navbar />
-          {children}
-        </main>
+        <Providers>
+          <main className="flex flex-col h-full">
+            <Navbar />
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );

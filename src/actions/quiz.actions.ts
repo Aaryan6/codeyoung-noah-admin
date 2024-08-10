@@ -2,7 +2,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { dateFormat } from "@/lib/utils";
 
-const getSubject = (subject_id: number) => {
+export const getSubject = (subject_id: number) => {
   switch (subject_id) {
     case 1:
       return "math";

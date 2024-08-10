@@ -3,9 +3,11 @@ import { NotebookPen } from "lucide-react";
 export default function StatsCard({
   figure,
   title,
+  percentage,
 }: {
   figure: number;
   title: string;
+  percentage?: boolean;
 }) {
   return (
     <Card>
@@ -14,7 +16,9 @@ export default function StatsCard({
         <NotebookPen className="stroke-gray-600" size={16} />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{figure}</div>
+        <div className="text-2xl font-bold">
+          {percentage ? figure + "%" : figure || "N/A"}
+        </div>
         {/* <p className="text-xs text-muted-foreground">+20.1% from last month</p> */}
       </CardContent>
     </Card>

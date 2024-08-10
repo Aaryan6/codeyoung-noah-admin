@@ -85,29 +85,25 @@ type Props = {
 export function SubjectCircleChart({ quizzes }: Props) {
   const dateRange = useDateRange();
 
-  const ifDateRange =
-    dateRange != undefined &&
-    dateRange.from != undefined &&
-    dateRange.to != undefined;
-  const filteredMathQuizzes = quizzes.mathQuizzes?.filter((q) =>
+  const filteredMathQuizzes = quizzes?.mathQuizzes?.filter((q) =>
     dateRange.from != undefined && dateRange.to != undefined
       ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
         new Date(q.created_at).getTime() <= dateRange.to?.getTime()
       : true
   );
-  const filteredScienceQuizzes = quizzes.scienceQuizzes?.filter((q) =>
+  const filteredScienceQuizzes = quizzes?.scienceQuizzes?.filter((q) =>
     dateRange.from != undefined && dateRange.to != undefined
       ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
         new Date(q.created_at).getTime() <= dateRange.to?.getTime()
       : true
   );
-  const filteredEnglishQuizzes = quizzes.englishQuizzes?.filter((q) =>
+  const filteredEnglishQuizzes = quizzes?.englishQuizzes?.filter((q) =>
     dateRange.from != undefined && dateRange.to != undefined
       ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
         new Date(q.created_at).getTime() <= dateRange.to?.getTime()
       : true
   );
-  const filteredTotalQuizzes = quizzes.totalQuizzes?.filter((q) =>
+  const filteredTotalQuizzes = quizzes?.totalQuizzes?.filter((q) =>
     dateRange.from != undefined && dateRange.to != undefined
       ? new Date(q.created_at).getTime() > dateRange.from?.getTime() &&
         new Date(q.created_at).getTime() <= dateRange.to?.getTime()
