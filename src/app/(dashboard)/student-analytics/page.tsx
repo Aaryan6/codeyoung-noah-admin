@@ -124,7 +124,7 @@ export default function StudentAnalytics() {
         {topicList && (
           <Card className="">
             <CardHeader>
-              <CardTitle>Most Served Topics</CardTitle>
+              <CardTitle>Topics Metrics</CardTitle>
             </CardHeader>
             <DataTable columns={columns} data={topicList.servedTopics} />
           </Card>

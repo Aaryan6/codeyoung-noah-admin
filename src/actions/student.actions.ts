@@ -62,7 +62,9 @@ export async function getStudentTopics({ user_id }: { user_id: string }) {
   const supabase = createClient();
   const { data } = await supabase
     .from("quiz")
-    .select("id,userid, created_at, topic_id, topic, topicTable:topic(*)")
+    .select(
+      "id,userid, created_at, submissions, topic_id, topic, topicTable:topic(*)"
+    )
     .eq("userid", user_id);
 
   return data;

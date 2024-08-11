@@ -17,20 +17,35 @@ export const getMostServedTopic = (data: any, dateRange: DateRange) => {
         userid: d.userid,
         created_at: d.created_at,
         topic: d?.topicTable?.topic_name || d?.topic,
+        submissions: d.submissions?.length,
+        score: d.submissions?.filter((s: any) => s.isCorrect).length,
       };
     });
 
-  const mostServedTopic = Object.entries(
+  const mostServedTopic = Object.values(
     dataByTopic
-      ?.filter((d: any) => d.topic != null)
+      ?.filter((d: any) => d.topic != null && d.submissions != undefined)
       .reduce((acc: any, curr: any) => {
         if (!acc[curr.topic]) {
-          acc[curr.topic] = 0;
+          acc[curr.topic] = {
+            topic: curr.topic,
+            served: 0,
+            score: 0,
+            attempts: 0,
+          };
         }
-        acc[curr.topic] += 1;
+        acc[curr.topic].score += curr.score;
+        acc[curr.topic].attempts += 1;
         return acc;
       }, {})
-  ).map(([topic, served]) => ({ topic, served }));
+  ).map((d: any) => {
+    return {
+      topic: d.topic,
+      score: d.score,
+      attempts: d.attempts,
+      avg: (d.score / d.attempts).toFixed(2),
+    };
+  });
 
   return {
     servedTopics: mostServedTopic,
