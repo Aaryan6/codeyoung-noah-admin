@@ -6,6 +6,10 @@ import {
 import { getWeeklyDoubtSolveMetrics } from "@/actions/insight.action";
 import Statistics from "./_components/stastistics";
 import { DoubtSolveBarChart } from "./_components/doubt-solve-bar-chart";
+import { getChatsMetrics } from "./_utils";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataTable } from "./_components/chats-table/data-table";
+import { columns } from "./_components/chats-table/column";
 
 export const metadata: Metadata = {
   title: "Doubt Solve Analytics",
@@ -19,6 +23,8 @@ export default async function AnalyticsDoubtSolve() {
       getConversationStatistics(),
       getWeeklyDoubtSolveMetrics(),
     ]);
+
+  const chatsMetrics: any = await getChatsMetrics(conversationAnalysis?.chats);
 
   return (
     <div className="w-full flex-col flex p-8">
@@ -34,6 +40,14 @@ export default async function AnalyticsDoubtSolve() {
           conversationAnalysis={conversationAnalysis}
         />
         <DoubtSolveBarChart weeklyMetrics={weeklyMetrics!} />
+        {chatsMetrics && (
+          <Card className="">
+            <CardHeader>
+              <CardTitle>Chats Metrics</CardTitle>
+            </CardHeader>
+            <DataTable columns={columns} data={chatsMetrics} />
+          </Card>
+        )}
       </div>
     </div>
   );

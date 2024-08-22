@@ -32,6 +32,7 @@ export async function getResolutionRate() {
   const totalChats = chats?.length || 0;
   const solvedChats = chats?.filter((chat) => chat.solved).length || 0;
   const resolutionRate = (solvedChats / totalChats) * 100;
+
   return { totalChats, solvedChats, resolutionRate };
 }
 
@@ -50,5 +51,6 @@ export async function getConversationStatistics() {
     totalConversations,
     conversationLengths,
     averageConversationLength,
+    chats,
   };
 }

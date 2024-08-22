@@ -7,7 +7,7 @@ export async function getStudentQuizzes({ user_id }: { user_id: string }) {
   const { data, error } = await supabase
     .from("quiz")
     .select(
-      "id,subject,subject_id, created_at, start, complete, userid, submissions"
+      "id,subject,subject_id, created_at, start, complete, userid, submissions, questions"
     )
     .eq("userid", user_id)
     .order("created_at", { ascending: true });
@@ -19,6 +19,7 @@ export async function getStudentQuizzes({ user_id }: { user_id: string }) {
       subject_id: d.subject_id,
       created_at: d.created_at,
       submissions: d.submissions,
+      question: d.questions,
     };
   });
 

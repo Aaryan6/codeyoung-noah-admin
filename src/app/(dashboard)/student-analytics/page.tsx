@@ -57,6 +57,8 @@ export default function StudentAnalytics() {
 
   const topicList = getMostServedTopic(topicData?.value, dateRange);
 
+  console.log({ quizData });
+
   return (
     <div className="p-4 space-y-4 bg-muted h-screen overflow-y-auto">
       <div className="">
